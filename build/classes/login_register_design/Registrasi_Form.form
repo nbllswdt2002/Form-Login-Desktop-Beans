@@ -414,6 +414,9 @@
             <Component class="javax.swing.JTextField" name="jTextField_ConfPassReg">
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_PhoneReg">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField_PhoneRegKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButton_MaleReg">
               <Properties>

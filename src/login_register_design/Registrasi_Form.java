@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 /**
@@ -43,14 +44,6 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jLabel_min.setBorder(label_min_close_border);
         jLabel_close.setBorder(label_min_close_border);
         
-        //create a border with the color of the parent jpanel for the icons label to remove the move
-//        Border label_icons_border = BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(153,153,153));
-//        jLabel_FullNameReg.setBorder(label_icons_border);
-//        jLabel_UserNameReg.setBorder(label_icons_border);
-//        jLabel_PasswordReg.setBorder(label_icons_border);
-//        jLabel_ConfPassReg.setBorder(label_icons_border);
-//        jLabel_PhoneReg.setBorder(label_icons_border);
-        
         //create border for the username and password field
         Border field_border = BorderFactory.createMatteBorder(1, 2, 1, 1, Color.pink);
         jTextField_FullNameReg.setBorder(field_border);
@@ -58,6 +51,11 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jTextField_PasswordReg.setBorder(field_border);
         jTextField_ConfPassReg.setBorder(field_border);
         jTextField_PhoneReg.setBorder(field_border);
+        
+        //create a button group for the radiobuttons
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(jRadioButton_MaleReg);
+        bg.add(jRadioButton_FemaleReg);
     }
 
     /**
@@ -223,6 +221,12 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jTextField_PasswordReg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField_PasswordRegActionPerformed(evt);
+            }
+        });
+
+        jTextField_PhoneReg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField_PhoneRegKeyTyped(evt);
             }
         });
 
@@ -421,6 +425,13 @@ public class Registrasi_Form extends javax.swing.JFrame {
     private void jTextField_PasswordRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_PasswordRegActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_PasswordRegActionPerformed
+
+    private void jTextField_PhoneRegKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_PhoneRegKeyTyped
+        //allow only numbers
+        if(!Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField_PhoneRegKeyTyped
 
     /**
      * @param args the command line arguments
