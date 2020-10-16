@@ -6,9 +6,15 @@
 package login_register_design;
 
 import java.awt.Color;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,6 +36,10 @@ public class Login_Form extends javax.swing.JFrame {
         //set the border to the jPanel_title
         jPanel_title.setBorder(jpanel_title_border);
         
+        //create an orange border for the global panels
+        Border glob_panel_border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.orange);
+        jPanel1.setBorder(glob_panel_border);
+        
         //create a black border for the close & minimize jlables
         Border label_min_close_border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black);
         jLabel_min.setBorder(label_min_close_border);
@@ -39,6 +49,11 @@ public class Login_Form extends javax.swing.JFrame {
         Border label_icons_border = BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(153,153,153));
         username_label.setBorder(label_icons_border);
         password_label.setBorder(label_icons_border);
+        
+        //create border for the username and password field
+        Border field_border = BorderFactory.createMatteBorder(1, 2, 1, 1, Color.pink);
+        jTextField_Username.setBorder(field_border);
+        jPasswordField1.setBorder(field_border);
     }
 
     /**
@@ -63,6 +78,7 @@ public class Login_Form extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
@@ -110,6 +126,11 @@ public class Login_Form extends javax.swing.JFrame {
                 jButton_LoginMouseExited(evt);
             }
         });
+        jButton_Login.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_LoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -123,9 +144,8 @@ public class Login_Form extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton_Login, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField_Username)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)))
+                    .addComponent(jTextField_Username)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -364,6 +384,40 @@ public class Login_Form extends javax.swing.JFrame {
     private void jLabel_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_closeMouseClicked
         System.exit(0);
     }//GEN-LAST:event_jLabel_closeMouseClicked
+
+    private void jButton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoginActionPerformed
+        PreparedStatement st;
+        ResultSet rs;
+        
+        //get the username & password
+        String username = jTextField_Username.getText();
+        String password = String.valueOf(jPasswordField1.getPassword());
+        
+        //create a select query to check if the username and the password exist in the database
+        String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
+        
+        try {
+            st = My_CNX.getConnection().prepareStatement(query);
+            
+            st.setString(1, username);
+            st.setString(2, password);
+            rs = st.executeQuery();
+            
+            if(rs.next())
+            {
+             Menu_Form form = new Menu_Form();
+             form.setVisible(true);
+             form.pack();
+             form.setLocationRelativeTo(null);
+             
+             this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error", 2);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login_Form.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_LoginActionPerformed
 
     /**
      * @param args the command line arguments
