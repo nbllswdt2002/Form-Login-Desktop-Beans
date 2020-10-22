@@ -6,6 +6,7 @@
 package login_register_design;
 
 import java.awt.Color;
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +15,10 @@ import java.util.logging.Logger;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author Nabila Eka
@@ -25,6 +28,10 @@ public class Registrasi_Form extends javax.swing.JFrame {
     /**
      * Creates new form Registrasi_Form
      */
+    
+    //create a variable to set the image path in it
+    String image_path = null;
+    
     public Registrasi_Form() {
         initComponents();
         
@@ -242,7 +249,13 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jLabel_ImagePathReg.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
         jLabel_ImagePathReg.setText("Image Path");
 
+        jButton_SelectImageReg.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton_SelectImageReg.setText("Select Image");
+        jButton_SelectImageReg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_SelectImageRegActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -433,6 +446,26 @@ public class Registrasi_Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField_PhoneRegKeyTyped
 
+    private void jButton_SelectImageRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SelectImageRegActionPerformed
+        // select an image and set the image path into a jlabel
+        String path = null;
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        
+        //File Extension
+        FileNameExtensionFilter extension = new FileNameExtensionFilter("Images", "jpg", "png", "jpeg");
+        chooser.addChoosableFileFilter(extension);
+        
+        int filestate = chooser.showSaveDialog(null);
+        
+        //check if the user select an image
+        if(filestate == JFileChooser.APPROVE_OPTION){
+            File selectedImage = chooser.getSelectedFile();
+            path = selectedImage.getAbsolutePath();
+            jLabel_ImagePathReg.setText(path);
+        }
+    }//GEN-LAST:event_jButton_SelectImageRegActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -469,7 +502,6 @@ public class Registrasi_Form extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_Login;
     private javax.swing.JButton jButton_Registrasi;
     private javax.swing.JButton jButton_SelectImageReg;
     private javax.swing.JLabel jLabel1;
@@ -490,20 +522,15 @@ public class Registrasi_Form extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_UserNameReg;
     private javax.swing.JLabel jLabel_close;
     private javax.swing.JLabel jLabel_min;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_title;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JRadioButton jRadioButton_FemaleReg;
     private javax.swing.JRadioButton jRadioButton_MaleReg;
     private javax.swing.JTextField jTextField_ConfPassReg;
     private javax.swing.JTextField jTextField_FullNameReg;
     private javax.swing.JTextField jTextField_PasswordReg;
     private javax.swing.JTextField jTextField_PhoneReg;
-    private javax.swing.JTextField jTextField_Username;
     private javax.swing.JTextField jTextField_UsernameReg;
-    private javax.swing.JLabel password_label;
-    private javax.swing.JLabel username_label;
     // End of variables declaration//GEN-END:variables
 }
