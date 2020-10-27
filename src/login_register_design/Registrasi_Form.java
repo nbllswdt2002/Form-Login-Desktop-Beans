@@ -7,6 +7,9 @@ package login_register_design;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,6 +66,10 @@ public class Registrasi_Form extends javax.swing.JFrame {
         ButtonGroup bg = new ButtonGroup();
         bg.add(jRadioButton_MaleReg);
         bg.add(jRadioButton_FemaleReg);
+        
+        //create a border for the create Account JLabels
+        Border label_login_border_ = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
+        jLabel_login.setBorder(label_login_border_);
     }
 
     /**
@@ -97,13 +104,14 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jTextField_UsernameReg = new javax.swing.JTextField();
         jTextField_FullNameReg = new javax.swing.JTextField();
-        jTextField_PasswordReg = new javax.swing.JTextField();
-        jTextField_ConfPassReg = new javax.swing.JTextField();
         jTextField_PhoneReg = new javax.swing.JTextField();
         jRadioButton_MaleReg = new javax.swing.JRadioButton();
         jRadioButton_FemaleReg = new javax.swing.JRadioButton();
         jLabel_ImagePathReg = new javax.swing.JLabel();
         jButton_SelectImageReg = new javax.swing.JButton();
+        jTextField_PasswordReg = new javax.swing.JPasswordField();
+        jTextField_ConfPassReg = new javax.swing.JPasswordField();
+        jLabel_login = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -225,18 +233,13 @@ public class Registrasi_Form extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 18)); // NOI18N
         jLabel15.setText(":");
 
-        jTextField_PasswordReg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField_PasswordRegActionPerformed(evt);
-            }
-        });
-
         jTextField_PhoneReg.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField_PhoneRegKeyTyped(evt);
             }
         });
 
+        jRadioButton_MaleReg.setSelected(true);
         jRadioButton_MaleReg.setText("Male");
         jRadioButton_MaleReg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -281,21 +284,20 @@ public class Registrasi_Form extends javax.swing.JFrame {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField_FullNameReg, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_PhoneReg, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_ConfPassReg, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_PasswordReg, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_UsernameReg, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jButton_SelectImageReg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel_ImagePathReg))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jRadioButton_MaleReg)
-                            .addGap(47, 47, 47)
-                            .addComponent(jRadioButton_FemaleReg))))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextField_FullNameReg, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                    .addComponent(jTextField_PhoneReg, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                    .addComponent(jTextField_UsernameReg, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButton_SelectImageReg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel_ImagePathReg))
+                    .addComponent(jTextField_PasswordReg)
+                    .addComponent(jTextField_ConfPassReg)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jRadioButton_MaleReg)
+                        .addGap(47, 47, 47)
+                        .addComponent(jRadioButton_FemaleReg)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -330,13 +332,13 @@ public class Registrasi_Form extends javax.swing.JFrame {
                     .addComponent(jTextField_UsernameReg, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField_PasswordReg, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(jLabel11))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(jTextField_PasswordReg, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField_ConfPassReg, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(jTextField_ConfPassReg, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_PhoneReg, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
@@ -349,8 +351,24 @@ public class Registrasi_Form extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_ImagePathReg, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton_SelectImageReg))
-                .addGap(77, 77, 77))
+                .addGap(85, 85, 85))
         );
+
+        jLabel_login.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_login.setForeground(new java.awt.Color(102, 0, 51));
+        jLabel_login.setText("Already Have an Account? Login!");
+        jLabel_login.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel_login.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_loginMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel_loginMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel_loginMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel_titleLayout = new javax.swing.GroupLayout(jPanel_title);
         jPanel_title.setLayout(jPanel_titleLayout);
@@ -362,9 +380,13 @@ public class Registrasi_Form extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel_titleLayout.createSequentialGroup()
-                .addGap(268, 268, 268)
+                .addGap(253, 253, 253)
                 .addComponent(jButton_Registrasi)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_titleLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel_login)
+                .addGap(214, 214, 214))
         );
         jPanel_titleLayout.setVerticalGroup(
             jPanel_titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,9 +394,11 @@ public class Registrasi_Form extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton_Registrasi)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel_login)
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -428,16 +452,60 @@ public class Registrasi_Form extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel_closeMouseExited
 
     private void jButton_RegistrasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegistrasiActionPerformed
-        // TODO add your handling code here:
+        String fname = jTextField_FullNameReg.getText();
+        String uname = jTextField_UsernameReg.getText();
+        String phone = jTextField_PhoneReg.getText();
+        String passnew = String.valueOf(jTextField_PasswordReg.getPassword()); 
+        String confpass = String.valueOf(jTextField_ConfPassReg.getPassword());
+        String gender = "Male";
+        
+        if(jRadioButton_FemaleReg.isSelected()){
+            gender = "Female";
+        }
+        
+        if(verifyFields()){
+            if(!checkUsername(uname)){
+                PreparedStatement ps;
+                ResultSet rs;
+                String registerUserQuery = "INSERT INTO `users`(`full_name`, `username`, `password`, `phone`, `gender`, `picture`) VALUES (?,?,?,?,?,?)";
+                
+                try {                  
+                    ps = My_CNX.getConnection().prepareStatement(registerUserQuery);
+                    ps.setString(1, fname);
+                    ps.setString(2, uname);
+                    ps.setString(3, passnew);
+                    ps.setString(4, phone);
+                    ps.setString(5, gender);
+                    try{
+                        if(image_path != null)
+                        {
+                                //Save the image as blob in the database
+                            InputStream image = new FileInputStream(new File(image_path));
+                            ps.setBlob(6, image);
+                        }
+                        else {
+                            ps.setNull(6, java.sql.Types.NULL);
+                        }
+                        if(ps.executeUpdate() != 0)
+                        {
+                            JOptionPane.showMessageDialog(null, "Your Account Has Been Created");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error: Check Your Information");
+                        }
+                    }
+                    catch(FileNotFoundException ex){
+                        Logger.getLogger(Registrasi_Form.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Registrasi_Form.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }//GEN-LAST:event_jButton_RegistrasiActionPerformed
 
     private void jRadioButton_MaleRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_MaleRegActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton_MaleRegActionPerformed
-
-    private void jTextField_PasswordRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_PasswordRegActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField_PasswordRegActionPerformed
 
     private void jTextField_PhoneRegKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_PhoneRegKeyTyped
         //allow only numbers
@@ -466,6 +534,80 @@ public class Registrasi_Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_SelectImageRegActionPerformed
 
+    private void jLabel_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_loginMouseClicked
+        Login_Form lf = new Login_Form();
+        lf.setVisible(true);
+        lf.pack();
+        lf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel_loginMouseClicked
+
+    private void jLabel_loginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_loginMouseEntered
+        Border label_border_Acc = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0, 204, 0));
+        jLabel_login.setBorder(label_border_Acc);
+    }//GEN-LAST:event_jLabel_loginMouseEntered
+
+    private void jLabel_loginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_loginMouseExited
+        Border label_create_border = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.gray);
+        jLabel_login.setBorder(label_create_border);
+    }//GEN-LAST:event_jLabel_loginMouseExited
+
+    //create a function verify
+    public boolean verifyFields()
+    {
+        String fname = jTextField_FullNameReg.getText();
+        String uname = jTextField_UsernameReg.getText();
+        String phone = jTextField_PhoneReg.getText();
+        String passnew = String.valueOf(jTextField_PasswordReg.getPassword()); 
+        String confpass = String.valueOf(jTextField_ConfPassReg.getPassword());
+        //check empty fields
+        if(fname.trim().equals("") || uname.trim().equals("") || phone.trim().equals("")
+                || passnew.trim().equals("") || confpass.trim().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "One or More Fields Are Empty");
+        }
+        
+        //check if the two password are equals
+        else if(!passnew.equals(confpass))
+        {
+            JOptionPane.showMessageDialog(null, "Password Doesn't Match", "Confirm Password", 2);
+                    return false;
+        }
+        
+        //if everything ok
+        else {
+            return true;
+        }
+        return false;
+    }
+    
+    //check a function to check if the entred username already exists in the database
+    public boolean checkUsername(String username)
+    {
+        PreparedStatement st;
+        ResultSet rs;
+        boolean username_exist = false;
+        
+        String query = "SELECT * FROM users WHERE username = ?";
+        
+        try{
+        st = My_CNX.getConnection().prepareStatement(query);
+        st.setString(1, username);
+        rs = st.executeQuery();
+        
+            if(rs.next())
+            {
+                username_exist = true;
+                JOptionPane.showMessageDialog(null, "This Username is Already Taken, Choose Another One", "Username Failed", 2);
+            }
+        }
+            catch (SQLException ex)
+            {
+                Logger.getLogger(Registrasi_Form.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return username_exist;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -521,15 +663,16 @@ public class Registrasi_Form extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_PhoneReg;
     private javax.swing.JLabel jLabel_UserNameReg;
     private javax.swing.JLabel jLabel_close;
+    private javax.swing.JLabel jLabel_login;
     private javax.swing.JLabel jLabel_min;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_title;
     private javax.swing.JRadioButton jRadioButton_FemaleReg;
     private javax.swing.JRadioButton jRadioButton_MaleReg;
-    private javax.swing.JTextField jTextField_ConfPassReg;
+    private javax.swing.JPasswordField jTextField_ConfPassReg;
     private javax.swing.JTextField jTextField_FullNameReg;
-    private javax.swing.JTextField jTextField_PasswordReg;
+    private javax.swing.JPasswordField jTextField_PasswordReg;
     private javax.swing.JTextField jTextField_PhoneReg;
     private javax.swing.JTextField jTextField_UsernameReg;
     // End of variables declaration//GEN-END:variables
