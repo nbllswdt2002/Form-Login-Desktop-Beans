@@ -138,7 +138,7 @@ public class Login_Form extends javax.swing.JFrame {
 
         jLabel_Create_Acc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel_Create_Acc.setForeground(new java.awt.Color(102, 0, 51));
-        jLabel_Create_Acc.setText("No Account? Create One!");
+        jLabel_Create_Acc.setText("No Account? Create an Account!");
         jLabel_Create_Acc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel_Create_Acc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -157,18 +157,20 @@ public class Login_Form extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(username_label, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(password_label, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton_Login, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                    .addComponent(jTextField_Username)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel_Create_Acc)
-                        .addGap(22, 22, 22)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(username_label, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(password_label, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton_Login, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                            .addComponent(jTextField_Username)
+                            .addComponent(jPasswordField1)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel_Create_Acc)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -187,9 +189,9 @@ public class Login_Form extends javax.swing.JFrame {
                         .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(41, 41, 41)
                 .addComponent(jButton_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel_Create_Acc)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         username_label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/username_field.png")));
@@ -424,6 +426,17 @@ public class Login_Form extends javax.swing.JFrame {
         //create a select query to check if the username and the password exist in the database
         String query = "SELECT * FROM `users` WHERE `username` = ? AND `password` = ?";
         
+        //show a message if the username or the password fields are empty
+        if(username.trim().equals("username"))
+        {
+            JOptionPane.showMessageDialog(null, "Enter Your Username", "Empty Username", 2);
+        }
+        else if (password.trim().equals("password"))
+        {
+            JOptionPane.showMessageDialog(null, "Enter Your Password", "Empty Password", 2);
+        }
+        else 
+        {    
         try {
             st = My_CNX.getConnection().prepareStatement(query);
             
@@ -442,8 +455,10 @@ public class Login_Form extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid Username / Password", "Login Error", 2);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Login_Form.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+            catch (SQLException ex) {
+                Logger.getLogger(Login_Form.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton_LoginActionPerformed
 
